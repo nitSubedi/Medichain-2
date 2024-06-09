@@ -1,45 +1,68 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const crypto = require('crypto-js');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
 const router = express.Router();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user'); // Assuming your model is named 'user'
 
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; 
+  
+    if (!token) {
+      return res.sendStatus(401);
+    }
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+          return res.sendStatus(403); 
+        }
+        req.user = user; 
+        next(); 
+      });
+};
 
+router.post('/login', async (req, res) => {
+    const { userID, password } = req.body;
 
-// Login route
-app.post('/login', async (req, res) => {
     try {
-        const { userID, password } = req.body;
-
-        const user = await User.findOne({ userID: crypto.AES.encrypt(userID, process.env.ENCRYPTION_KEY).toString() });
+        const user = await User.findOne({ userID });
 
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(400).json({ message: "Invalid username or password" });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).send('Invalid credentials');
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch || user.userID !== userID) {
+            return res.status(400).json({ message: "Invalid username or password" });
         }
 
-        
-        const decryptedUserID = crypto.AES.decrypt(user.userID, process.env.ENCRYPTION_KEY).toString(crypto.enc.Utf8);
-        const decryptedWalletAddress = crypto.AES.decrypt(user.walletAddress, process.env.ENCRYPTION_KEY).toString(crypto.enc.Utf8);
+        // If username and password match, generate JWT token
+        const token = jwt.sign(
+            { userID: user.userID, role: user.role, walletAddress:user.walletAddress, phone: user.phoneNumber },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' } // Token expires in 1 hour
+        );
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-        res.status(200).json({
-            token,
-            user: {
-                id: user._id,
-                userID: decryptedUserID,
-                walletAddress: decryptedWalletAddress,
-            }
-        });
+        res.json({ token });
     } catch (error) {
-        res.status(500).send('Server error: ' + error.message);
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
     }
+});
+
+router.get('/user', authenticateToken, (req, res) => {
+    const iv = Buffer.from(user.iv, 'hex');
+        const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(process.env.ENCRYPTION_KEY, 'hex'), iv);
+        let decryptedWalletAddress = decipher.update(user.walletAddress, 'hex', 'utf-8');
+        decryptedWalletAddress += decipher.final('utf-8');
+
+        res.json({
+            userID: user.userID,
+            role: user.role,
+            walletAddress: decryptedWalletAddress,
+            phoneNumber: user.phoneNumber,
+            
+        });
 });
 
 module.exports = router;

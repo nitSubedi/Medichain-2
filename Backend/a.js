@@ -1,0 +1,1 @@
+console.log('Encryption Key Length:', process.env.ENCRYPTION_KEY.length);
