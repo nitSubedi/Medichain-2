@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user'); // Assuming your model is named 'user'
+const user = require('../models/user'); // Assuming your model is named 'user'
 
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -21,7 +21,7 @@ const authenticateToken = (req, res, next) => {
 };
 
 router.post('/login', async (req, res) => {
-    const { userID, password } = req.body;
+    const { userID, password, role } = req.body;
 
     try {
         const user = await User.findOne({ userID });
@@ -32,9 +32,11 @@ router.post('/login', async (req, res) => {
 
         const passwordMatch = await bcrypt.compare(password, user.password);
 
-        if (!passwordMatch || user.userID !== userID) {
+        if (!passwordMatch || user.userID !== userID || user.role !== role) {
             return res.status(400).json({ message: "Invalid username or password" });
         }
+
+        
 
         // If username and password match, generate JWT token
         const token = jwt.sign(
