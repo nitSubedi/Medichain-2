@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 import { RoleContext } from '../utils/ThemeRole';
 
@@ -11,9 +11,12 @@ function Home() {
     <div>
         <div>This is Home Page</div>
         <h1>{role}</h1>
-        <button onClick={() => setRole("Patient")}>Patient</button>
-        <button onClick={() => setRole("Doctor")}> Doctor</button>
+        <button onClick={() => setRole("patient")}>Patient</button>
+        <button onClick={() => setRole("healthcare_provider")}> Health Care Provider</button>
         <Link to='/login'> Go to Login Page</Link>
+        <br/>
+        <Link to='/signup'>Create an Account</Link>
+      
     </div>
     
   )

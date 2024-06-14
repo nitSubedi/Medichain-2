@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const user = require('../models/user'); // Assuming your model is named 'user'
+const User = require('../models/user'); // Assuming your model is named 'user'
 
 
 const authenticateToken = (req, res, next) => {
