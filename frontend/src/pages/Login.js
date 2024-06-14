@@ -58,7 +58,7 @@ console.log(loginFormData)
           name="userID"
           type='text'
           placeholder='Username'
-          value={loginFormData.email}
+          value={loginFormData.userID}
           onChange={handleChange}
         />
 

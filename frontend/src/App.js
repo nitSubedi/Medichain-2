@@ -2,7 +2,7 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import Layout from "./components/Layout";
 import Home from './pages/Home';
 import Login, {loginAction} from './pages/Login';
-import Signup from './pages/Signup'
+import Signup, { signupAction } from './pages/Signup'
 import PatientDash from './pages/Patient/PatientDash'
 import Error from "./pages/Error";
 import { RoleProvider } from "./utils/ThemeRole";
@@ -16,7 +16,7 @@ function App() {
       <Route path='login' element={<Login />} action={loginAction} errorElement={<Error />}/>
       <Route path='patientDash' element={<PatientDash />}/>
       <Route path='hcpDash' element={<HcpDash />}/>
-      <Route path='signup' element={<Signup />}/>
+      <Route path='signup' element={<Signup />} action={signupAction} errorElement={<Error />}/>
     </Route>
   ))
   return (
