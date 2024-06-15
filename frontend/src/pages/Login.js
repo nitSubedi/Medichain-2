@@ -13,7 +13,9 @@ export async function loginAction({ request }) {
   try {
     const res = await loginUser({ userID, password, role })
     if (res.ok) {
-      console.log(res)
+      const token = res.data.token;
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('userRole', role)
       if (role === 'patient') {
         return redirect('/patientDash');
       }else if(role === 'healthcare_provider'){
@@ -30,10 +32,12 @@ export async function loginAction({ request }) {
     return {error: err.message }
   }
 }
+
+
 function Login() {
   const {role, setRole} = useContext(RoleContext);
   const navigation = useNavigation()
-  const message = useActionData()
+  const actionData = useActionData()
   const [loginFormData, setLoginFormData] = useState({ userID: "", password: "", role: role ?? "" })
  
 
@@ -101,10 +105,12 @@ console.log(loginFormData)
           {navigation.state === "submitting" ? "Logging In....." : "Log In"}
         </button>
       </Form>
-      {message && <h1>{message.error || message}</h1>}
+      {actionData && actionData.error && <h1 style={{ color: 'red' }}>{actionData.error}</h1>}
       <Link to='/signup'>Create an Account</Link>
     </div>
   )
 }
 
 export default Login
+
+
