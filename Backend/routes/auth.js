@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user'); // Assuming your model is named 'user'
-
+const User = require('../models/user');
+const cors = require('cors');
+const crypto = require('crypto')
 
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -38,12 +39,10 @@ router.post('/login', async (req, res) => {
         }
 
         
-
-        // If username and password match, generate JWT token
         const token = jwt.sign(
-            { userID: user.userID, role: user.role, walletAddress:user.walletAddress, phone: user.phoneNumber },
+            { userID: user.userID, role: user.role, walletAddress:user.walletAddress, phone: user.phoneNumber,  },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' } // Token expires in 1 hour
+            { expiresIn: '1h' } 
         );
 
         res.json({ token });
@@ -53,19 +52,34 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.get('/user', authenticateToken, (req, res) => {
-    const iv = Buffer.from(user.iv, 'hex');
+router.get('/user', authenticateToken, async (req, res) => {
+    try {
+        const user = await User.findOne({ userID: req.user.userID });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const iv = Buffer.from(user.iv, 'hex');
         const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(process.env.ENCRYPTION_KEY, 'hex'), iv);
-        let decryptedWalletAddress = decipher.update(user.walletAddress, 'hex', 'utf-8');
-        decryptedWalletAddress += decipher.final('utf-8');
+
+        let decryptedWalletAddress = '';
+        if (user.walletAddress) {
+            decryptedWalletAddress = decipher.update(user.walletAddress, 'hex', 'utf-8');
+            decryptedWalletAddress += decipher.final('utf-8');
+        } else {
+            console.error("Encrypted wallet address is missing");
+        }
 
         res.json({
             userID: user.userID,
             role: user.role,
             walletAddress: decryptedWalletAddress,
             phoneNumber: user.phoneNumber,
-            
         });
+    } catch (error) {
+        console.error("Error retrieving user data:", error);
+        res.status(500).json({ message: "Server Error" });
+    }
 });
-
 module.exports = router;

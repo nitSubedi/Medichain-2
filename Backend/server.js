@@ -1,4 +1,4 @@
-// server.js
+
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -6,52 +6,48 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
 const jwt = require('jsonwebtoken');
 const recordRoutes = require('./routes/routes');
-//const { connectToEthereum } = require('./config/ethereum');
 const {createUser} = require('./controller/userController');
 const {connectToDatabase} = require('./config/database');
 const {generateWalletAddress} = require('./utils/walletutil');
 const User = require('./models/user')
-const {generateIV}=require('./encryptionKeygen');
 const cors = require('cors');
+const {fundAccount} = require('./utils/fundAccount');
 
 
-// Initialize Express app
 const app = express();
 
-// Middleware
 app.use(bodyParser.json());
 
 
-
-// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
 
-// Connect to Ethereum
-//connectToEthereum();
 
 app.use(cors());
 app.use('/api/auth', authRoutes);
 
-
 app.post("/register", async(req, res) => {
     const { userID, password, role, phoneNumber} = req.body;
     try {
-        const walletAddress = generateWalletAddress();
-        
+    const {walletAddress, privateKey} = generateWalletAddress();
+    await fundAccount(walletAddress,'5');
 
-        await createUser(userID, password, role, phoneNumber, walletAddress);
+        await createUser(userID, password, role, phoneNumber, walletAddress, privateKey);
+
+        const token = jwt.sign(
+            { userID: user.userID, role: user.role, walletAddress:user.walletAddress, phone: user.phoneNumber,  },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' } 
+        );
+
+        res.json({ token });
         res.status(201).json({ message: 'User created successfully' });
     }catch(error){
         console.error('Error creating user:', error);
         res.status(500).json({ error: 'An error occurred while creating the user' });
     }
 });
-
-
-
-
 
 
 const PORT = process.env.PORT || 5001;

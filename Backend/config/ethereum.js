@@ -1,5 +1,4 @@
 /*const Web3 = require('web3');
-
 let web3;
 let contract;
 

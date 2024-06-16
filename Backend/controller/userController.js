@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 const{generateIV}=require('../encryptionKeygen');
 
-const createUser = async (userID, password, role, phoneNumber, walletAddress,) => {
+const createUser = async (userID, password, role, phoneNumber, walletAddress, privateKey) => {
   try {
     const iv = generateIV();
 
@@ -12,7 +12,8 @@ const createUser = async (userID, password, role, phoneNumber, walletAddress,) =
         role,
         phoneNumber,
         walletAddress,
-        iv:iv.toString('hex')
+        privateKey,
+        iv
     });
 
     await newUser.save();
