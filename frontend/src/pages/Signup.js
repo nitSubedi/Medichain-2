@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Form, useNavigation, redirect, useActionData } from 'react-router-dom'
+import { Form, useNavigation, redirect, useActionData, Link } from 'react-router-dom'
 import { RoleContext } from '../utils/ThemeRole'
 import { signupUser } from '../utils/api';
 
@@ -13,7 +13,10 @@ export async function signupAction({request}){
   try{
     const res = await signupUser({userID, password, role, phoneNumber})
     if (res.ok) {
-      console.log(res)
+     
+      const token = res.data.token;
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('userRole', role)
       if (role === 'patient') {
         return redirect('/patientDash');
       }else if(role === 'healthcare_provider'){
@@ -51,6 +54,7 @@ function Signup() {
   console.log(signupFormData)
   return (
     <div className='signup-container'>
+      <Link to='/login'>Back to Login</Link>
       <h1>Create an Account</h1>
       <Form method='post' className='signup-form'>
         <input

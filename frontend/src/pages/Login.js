@@ -9,16 +9,17 @@ export async function loginAction({ request }) {
   const userID = formData.get("userID")
   const password = formData.get("password")
   const role = formData.get("role")
-  
+  const phoneNumber = formData.get("phoneNumber")
+
   try {
-    const res = await loginUser({ userID, password, role })
+    const res = await loginUser({ userID, password, role, phoneNumber })
     if (res.ok) {
       const token = res.data.token;
       localStorage.setItem('authToken', token);
       localStorage.setItem('userRole', role)
       if (role === 'patient') {
         return redirect('/patientDash');
-      }else if(role === 'healthcare_provider'){
+      } else if (role === 'healthcare_provider') {
         return redirect('/hcpDash');
       }
       // Add additional role checks and redirects as needed
@@ -29,17 +30,17 @@ export async function loginAction({ request }) {
     }
   }
   catch (err) {
-    return {error: err.message }
+    return { error: err.message }
   }
 }
 
 
 function Login() {
-  const {role, setRole} = useContext(RoleContext);
+  const { role, setRole } = useContext(RoleContext);
   const navigation = useNavigation()
   const actionData = useActionData()
   const [loginFormData, setLoginFormData] = useState({ userID: "", password: "", role: role ?? "" })
- 
+
 
   function handleChange(e) {
     const { name, value } = e.target
@@ -52,7 +53,7 @@ function Login() {
     }
   }
 
-console.log(loginFormData)
+  console.log(loginFormData)
   return (
     <div className='login-container'>
       {role}
@@ -76,14 +77,14 @@ console.log(loginFormData)
 
 
         <div>
-          Select Your Role:   
+          Select Your Role:
           <label>
             Patient
             <input
               name='role'
               type='radio'
               value="patient"
-              checked = {loginFormData.role === 'patient'}
+              checked={loginFormData.role === 'patient'}
               onChange={handleChange}
             />
           </label>
@@ -93,13 +94,19 @@ console.log(loginFormData)
               name='role'
               type='radio'
               value="healthcare_provider"
-              checked = {loginFormData.role === 'healthcare_provider'}
+              checked={loginFormData.role === 'healthcare_provider'}
               onChange={handleChange}
             />
           </label>
         </div>
 
-        
+        <input
+          name='phoneNumber'
+          type='tel'
+          placeholder='Phone Number'
+          value={loginFormData.phoneNumber}
+          onChange={handleChange}
+        />
 
         <button disabled={navigation.state === "submitting"}>
           {navigation.state === "submitting" ? "Logging In....." : "Log In"}

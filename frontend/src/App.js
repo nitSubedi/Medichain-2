@@ -8,6 +8,7 @@ import Error from "./pages/Error";
 import { RoleProvider } from "./utils/ThemeRole";
 import HcpDash from "./pages/HealthCareProvider/HcpDash";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
+import './index.css';
 
 
 function App() {
