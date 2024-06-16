@@ -36,13 +36,11 @@ app.post("/register", async(req, res) => {
         await createUser(userID, password, role, phoneNumber, walletAddress, privateKey);
 
         const token = jwt.sign(
-            { userID: user.userID, role: user.role, walletAddress:user.walletAddress, phone: user.phoneNumber,  },
+            { userID, role, walletAddress, phoneNumber },
             process.env.JWT_SECRET,
             { expiresIn: '1h' } 
         );
-
-        res.json({ token });
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ message: 'User created successfully', token });
     }catch(error){
         console.error('Error creating user:', error);
         res.status(500).json({ error: 'An error occurred while creating the user' });

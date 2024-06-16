@@ -23,18 +23,27 @@ const authenticateToken = (req, res, next) => {
 };
 
 router.post('/login', async (req, res) => {
-    const { userID, password, role } = req.body;
+    const { userID, password, role, phoneNumber } = req.body;
 
     try {
-        const user = await User.findOne({ userID });
+        const user = await User.findOne({ phoneNumber });
 
         if (!user) {
-            return res.status(400).json({ message: "Invalid username or password" });
+            return res.status(400).json({ message: "Invalid username or password or phoneNumber" });
+        }
+        const iv = Buffer.from(user.iv, 'hex');
+        const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(process.env.ENCRYPTION_KEY, 'hex'), iv);
+        let decryptedUserID = '';
+        if (user.userID) {
+            decryptedUserID = decipher.update(user.userID, 'hex', 'utf-8');
+            decryptedUserID += decipher.final('utf-8');
+        } else {
+            console.error("Encrypted wallet address is missing");
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
 
-        if (!passwordMatch || user.userID !== userID || user.role !== role) {
+        if (!passwordMatch || decryptedUserID !== userID || user.role !== role) {
             return res.status(400).json({ message: "Invalid username or password" });
         }
 
@@ -66,13 +75,22 @@ router.get('/user', authenticateToken, async (req, res) => {
         let decryptedWalletAddress = '';
         if (user.walletAddress) {
             decryptedWalletAddress = decipher.update(user.walletAddress, 'hex', 'utf-8');
-            decryptedWalletAddress += decipher.final('utf-8');
+            decryptedWalletAddress += decipher.final('utf-8');  
         } else {
             console.error("Encrypted wallet address is missing");
         }
 
+        const decipherUserID = crypto.createDecipheriv('aes-256-cbc', Buffer.from(process.env.ENCRYPTION_KEY, 'hex'), iv);
+        let decryptedUserID = '';
+        if (user.userID) {
+            decryptedUserID = decipherUserID.update(user.userID, 'hex', 'utf-8');
+            decryptedUserID += decipherUserID.final('utf-8');
+        } else {
+            console.error("Encrypted userId is missing");
+        }
+        
         res.json({
-            userID: user.userID,
+            userID: decryptedUserID,
             role: user.role,
             walletAddress: decryptedWalletAddress,
             phoneNumber: user.phoneNumber,
