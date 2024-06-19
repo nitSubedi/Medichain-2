@@ -39,7 +39,12 @@ function Login() {
   const { role, setRole } = useContext(RoleContext);
   const navigation = useNavigation()
   const actionData = useActionData()
-  const [loginFormData, setLoginFormData] = useState({ userID: "", password: "", role: role ?? "" })
+  const [loginFormData, setLoginFormData] = useState({
+    userID: "",
+    password: "",
+    role: role ?? "",
+    phoneNumber: ""
+  })
 
 
   function handleChange(e) {
@@ -53,7 +58,7 @@ function Login() {
     }
   }
 
-  console.log(loginFormData)
+  
   return (
     <div className='login-container'>
       {role}

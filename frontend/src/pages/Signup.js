@@ -3,25 +3,18 @@ import { Form, useNavigation, redirect, useActionData, Link } from 'react-router
 import { RoleContext } from '../utils/ThemeRole'
 import { signupUser } from '../utils/api';
 
-export async function signupAction({request}){
+export async function signupAction({ request }) {
   const formData = await request.formData()
-  const userID  = formData.get("userID");
+  const userID = formData.get("userID");
   const password = formData.get("password")
   const role = formData.get("role")
   const phoneNumber = formData.get("phoneNumber")
 
-  try{
-    const res = await signupUser({userID, password, role, phoneNumber})
+  try {
+    const res = await signupUser({ userID, password, role, phoneNumber })
     if (res.ok) {
-     
-      const token = res.data.token;
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('userRole', role)
-      if (role === 'patient') {
-        return redirect('/patientDash');
-      }else if(role === 'healthcare_provider'){
-        return redirect('/hcpDash');
-      }
+      console.log("Working up here")
+      return redirect('/login')
       // Add additional role checks and redirects as needed
     } else {
       // Handle the case where the signup is not OK
@@ -30,7 +23,7 @@ export async function signupAction({request}){
     }
   }
   catch (err) {
-    return {error: err.message }
+    return { error: err.message }
   }
 }
 
@@ -39,7 +32,7 @@ function Signup() {
   const { role, setRole } = useContext(RoleContext);
   const navigation = useNavigation();
   const [signupFormData, setsignupFormData] = useState({ userID: "", password: "", role: role ?? "", phoneNumber: "" });
- const message = useActionData();
+  const actionData = useActionData();
 
   function handleChange(e) {
     const { name, value } = e.target
@@ -52,6 +45,7 @@ function Signup() {
     }
   }
   console.log(signupFormData)
+  console.log(actionData)
   return (
     <div className='signup-container'>
       <Link to='/login'>Back to Login</Link>
@@ -103,12 +97,12 @@ function Signup() {
           value={signupFormData.phoneNumber}
           onChange={handleChange}
         />
-
+        {actionData && actionData.error && <h1 style={{ color: 'red' }}>{actionData.error}</h1>}
         <button disabled={navigation.state === "submitting"}>
           {navigation.state === "submitting" ? "Signing up" : "Sign up"}
         </button>
       </Form>
-      {message && <h1>{message.error || message}</h1>}
+
     </div>
   )
 }

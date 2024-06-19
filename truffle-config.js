@@ -8,11 +8,13 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: "^0.8.0",    // Specify compiler version
+      version: "0.8.19",    // Specify compiler version
       optimizer: {
         enabled: true,
         runs: 200,
       },
+      settings: { evmVersion: 'london' }
     },
+
   },
 };
