@@ -9,9 +9,10 @@ const recordRoutes = require('./routes/routes');
 const {createUser} = require('./controller/userController');
 const {connectToDatabase} = require('./config/database');
 const {generateWalletAddress} = require('./utils/walletutil');
-const User = require('./models/user')
+const User = require('./models/user');
+const { ethers } = require('ethers');
 const cors = require('cors');
-const {fundAccount} = require('./utils/fundAccount');
+const {fundAccount, getPrefundedAccount, getCounter,incrementCounter} = require('./utils/fundAccount');
 
 
 const app = express();
@@ -27,13 +28,19 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.use(cors());
 app.use('/api/auth', authRoutes);
 
+
+const provider = new ethers.providers.JsonRpcProvider(process.env.GANACHE_URL);
+let counter = 0
 app.post("/register", async(req, res) => {
     const { userID, password, role, phoneNumber} = req.body;
     try {
-    const {walletAddress, privateKey} = generateWalletAddress();
-    await fundAccount(walletAddress,'5');
+        
+        const {walletAddress, privateKey} = await getPrefundedAccount(counter);
+        
 
         await createUser(userID, password, role, phoneNumber, walletAddress, privateKey);
+
+       counter++;
 
         const token = jwt.sign(
             { userID, role, walletAddress, phoneNumber },
