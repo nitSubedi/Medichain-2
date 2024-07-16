@@ -30,7 +30,7 @@ app.use('/api/auth', authRoutes);
 
 
 const provider = new ethers.providers.JsonRpcProvider(process.env.GANACHE_URL);
-let counter = 0
+let counter = 1
 app.post("/register", async(req, res) => {
     const { userID, password, role, phoneNumber} = req.body;
     try {

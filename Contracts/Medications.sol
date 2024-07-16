@@ -16,12 +16,12 @@ contract Medications is AccessControl{
     event MedicationAdded(address indexed providerAddress,address indexed patientAddress, string medication);
 
    
-    function addMedication(address _patient,string memory _medicationName, string memory _dosage, string memory _startDate, string memory _endDate) external onlyProvider(msg.sender, _patient){
+    function addMedication(address _patient,string memory _medicationName, string memory _dosage, string memory _startDate, string memory _endDate) external write( _patient){
         medications[_patient].push(Medication(_medicationName, _dosage, _startDate, _endDate));
         emit MedicationAdded(msg.sender, _patient, _medicationName);
     }
 
-    function getMedication(address _patientAddress) public view onlyProviderOrPatient(_patientAddress) returns (Medication[] memory){
+    function getMedication(address _patientAddress) public view readOnly(_patientAddress) returns (Medication[] memory){
         return medications[_patientAddress];
     }
 }

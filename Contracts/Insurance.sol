@@ -26,7 +26,7 @@ contract Insurance is AccessControl{
         string memory _effectiveDateStart,
         string memory _effectiveDateEnd,
         string memory _contactInfo
-    ) public onlyProvider(msg.sender, _patient){
+    ) public write(msg.sender, _patient){
         insurance[_patient] = InsuranceDetails(
             _provider,
             _policyNumber,
@@ -40,7 +40,7 @@ contract Insurance is AccessControl{
 
     }
 
-    function getInsurance(address _patientAddress) public view onlyProviderOrPatient(_patientAddress) returns(
+    function getInsurance(address _patientAddress) public view readOnly(_patientAddress) returns(
         string memory,
         string memory,
         string memory,

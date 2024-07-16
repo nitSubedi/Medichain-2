@@ -12,12 +12,12 @@ contract MentalHistory is AccessControl{
 
     event DiagnosisAdded(address indexed providerAddress, address indexed patientAddress, string mentalHealth);
 
-    function addDiagnosis(address _patient, string memory _mentalHealthDiagnosis, string memory _dateDiagnosed) public onlyProvider(msg.sender, _patient){
+    function addDiagnosis(address _patient, string memory _mentalHealthDiagnosis, string memory _dateDiagnosed) public write( _patient){
         mentalHealth[_patient].push(MentalHealth(_mentalHealthDiagnosis, _dateDiagnosed));
         emit DiagnosisAdded(msg.sender, _patient,  _mentalHealthDiagnosis);
     }
 
-    function getDiagnosis(address _patientAddress) public view onlyProviderOrPatient(_patientAddress) returns (MentalHealth[] memory){
+    function getDiagnosis(address _patientAddress) public view readOnly(_patientAddress) returns (MentalHealth[] memory){
         return mentalHealth[_patientAddress];
     }
 }
