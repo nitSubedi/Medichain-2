@@ -75,14 +75,14 @@ function HcpDash() {
     try {
       
       console.log('getting data for patient :', patientAddress, 'from:', account);
-      const allergies = await allergyInstance.methods.getAllergies(patientAddress).call();
-      const demographics = await demographyInstance.methods.getDemographics(patientAddress).call({ from: account });
-      const immunizations = await immunizationInstance.methods.getImmunization(patientAddress).call({ from: account});
-      const insurance = await insuranceInstance.methods.getInsurance(patientAddress).call({ from: account});
-      const medicalConditions = await medicalConditionInstance.methods.getMedicalCondition(patientAddress).call({ from: account});
-      const medications = await medicationInstance.methods.getMedication(patientAddress).call({ from: account});
-      const mentalHealth = await mentalInstance.methods.getDiagnosis(patientAddress).call({ from: account });
-      const surgeries = await surgeryInstance.methods.getSurgery(patientAddress).call({ from: account });
+      const allergies = await allergyInstance.methods.getAllergies(patientAddress).call({from: account, gas: 3000000});
+      const demographics = await demographyInstance.methods.getDemographics(patientAddress).call({ from: account, gas: 3000000 });
+      const immunizations = await immunizationInstance.methods.getImmunization(patientAddress).call({ from: account, gas: 3000000});
+      const insurance = await insuranceInstance.methods.getInsurance(patientAddress).call({ from: account, gas: 3000000});
+      const medicalConditions = await medicalConditionInstance.methods.getMedicalCondition(patientAddress).call({ from: account, gas: 3000000});
+      const medications = await medicationInstance.methods.getMedication(patientAddress).call({ from: account, gas: 3000000});
+      const mentalHealth = await mentalInstance.methods.getDiagnosis(patientAddress).call({ from: account, gas: 3000000 });
+      const surgeries = await surgeryInstance.methods.getSurgery(patientAddress).call({ from: account, gas: 3000000 });
 
       const convertBigIntToString = (data) => {
         if (typeof data === 'bigint') return data.toString();
@@ -94,16 +94,63 @@ function HcpDash() {
         }
         return data;
       };
+      const formattedAllergies = allergies.map(allergy => ({
+        allergy: allergy.allergy,
+      }));
+
+      const formattedDemographics = {
+        name: demographics[0],
+        dateOfBirth: demographics[1],
+        gender: demographics[2],
+        homeAddress: demographics[3],
+      };
+
+      const formattedImmunizations = immunizations.map(immunization => ({
+        vaccine: immunization.vaccine,
+        administeredDate: immunization.administeredDate,
+      }));
+
+      const formattedInsurance = {
+        provider: insurance[0],
+        policyNumber: insurance[1],
+        coverageDetails: insurance[2],
+        coverageLimit: insurance[3].toString(),
+        effectiveDateStart: insurance[4],
+        effectiveDateEnd: insurance[5],
+        contactInfo: insurance[6],
+      };
+
+      const formattedMedicalConditions = medicalConditions.map(condition => ({
+        condition: condition.condition,
+        diagnosisDate: condition.diagnosisDate,
+      }));
+
+      const formattedMedications = medications.map(medication => ({
+        medicationName: medication.medicationName,
+        dosage: medication.dosage,
+        startDate: medication.startDate,
+        endDate: medication.endDate,
+      }));
+
+      const formattedMentalHealth = mentalHealth.map(diagnosis => ({
+        mentalHealthDiagnosis: diagnosis.mentalHealthDiagnosis,
+        dateDiagnosed: diagnosis.dateDiagnosed,
+      }));
+
+      const formattedSurgeries = surgeries.map(surgery => ({
+        surgeryType: surgery.surgeryType,
+        surgeryDate: surgery.surgeryDate,
+      }));
 
       const patientData = {
-        allergies: convertBigIntToString(allergies),
-        demographics: convertBigIntToString(demographics),
-        immunizations: convertBigIntToString(immunizations),
-        insurance: convertBigIntToString(insurance),
-        medicalConditions: convertBigIntToString(medicalConditions),
-        medications: convertBigIntToString(medications),
-        mentalHealth: convertBigIntToString(mentalHealth),
-        surgeries: convertBigIntToString(surgeries),
+        allergies: formattedAllergies,
+        demographics: formattedDemographics,
+        immunizations: formattedImmunizations,
+        insurance: formattedInsurance,
+        medicalConditions: formattedMedicalConditions,
+        medications: formattedMedications,
+        mentalHealth: formattedMentalHealth,
+        surgeries: formattedSurgeries,
       };
 
       setPatientData(patientData);

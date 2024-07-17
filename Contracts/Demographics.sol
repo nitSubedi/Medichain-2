@@ -15,7 +15,7 @@ contract Demographics is AccessControl{
 
     event DemographicsUpdated(address indexed providerAddress, address indexed patientAddress);
 
-    function setDemographics(address _patient, string memory _name, string memory _dateOfBirth, string memory _gender, string memory _homeAddress) public write(msg.sender, _patient){
+    function setDemographics(address _patient, string memory _name, string memory _dateOfBirth, string memory _gender, string memory _homeAddress) public write( _patient){
         demographics[_patient] = Demographic(_name, _dateOfBirth, _gender, _homeAddress);
         emit DemographicsUpdated(msg.sender,_patient);
     }

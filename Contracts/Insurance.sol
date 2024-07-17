@@ -26,7 +26,7 @@ contract Insurance is AccessControl{
         string memory _effectiveDateStart,
         string memory _effectiveDateEnd,
         string memory _contactInfo
-    ) public write(msg.sender, _patient){
+    ) public write( _patient){
         insurance[_patient] = InsuranceDetails(
             _provider,
             _policyNumber,

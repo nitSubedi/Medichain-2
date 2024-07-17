@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({userID:{type: String, required:true,uniq
     phoneNumber:{type:String, required:true, unique:true},
     walletAddress:{type:String, required:true},
     privateKey: {type:String, required:true},
-    iv:{type:String, required:true}
+    iv:{type:String, required:true},
+    addressInteracted:{type:Array, default:[]}
     });
 
 userSchema.pre('save', async function (next) {
