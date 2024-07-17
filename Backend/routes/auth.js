@@ -62,7 +62,7 @@ router.post('/login', async (req, res) => {
 
         
         const token = jwt.sign(
-            { userID: user.userID, role: user.role, walletAddress:user.walletAddress, phone: user.phoneNumber, private: user.privateKey  },
+            { userID: user.userID, role: user.role, walletAddress:user.walletAddress, phone: user.phoneNumber, private: user.privateKey, addressed: user.addressInteracted  },
             process.env.JWT_SECRET,
             { expiresIn: '1h' } 
         );
@@ -93,7 +93,8 @@ router.get('/user', authenticateToken, async (req, res) => {
             role: user.role,
             walletAddress: decryptedWalletAddress,
             phoneNumber: user.phoneNumber,
-            privateKey: decryptedPrivateKey
+            privateKey: decryptedPrivateKey,
+            addressInteracted: user.addressInteracted
         });
     } catch (error) {
         console.error("Error retrieving user data:", error);
