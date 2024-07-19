@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, redirect, json, useLoaderData } from 'react-router-dom';
 import { getUserData } from '../../utils/api';
+import { addProviderorPatient } from '../../utils/api';
 import { contractABIs, contractAddresses } from '../../utils/contracts';
 import Web3 from 'web3';
 
@@ -19,6 +20,7 @@ export async function loader() {
   }
   const res = await getUserData();
   return json(res.data);
+  
 }
 
 function HcpDash() {
@@ -31,6 +33,7 @@ function HcpDash() {
   const [patientData, setPatientData] = useState('');
   const [newData, setNewData] = useState('');
   const [account, setAccount] = useState('');
+ 
 
   
   useEffect(() => {
@@ -160,6 +163,10 @@ function HcpDash() {
     }
   };
 
+  //const addressData = {data.userID, patientAddress};
+  //const handleNewAddresses = async()=>{
+  
+
   const handleUpdate = () => {
     console.log('Update mode selected');
     setMode('update');
@@ -233,6 +240,8 @@ function HcpDash() {
   const renderPatientDataJSON = () => {
     return <pre>{JSON.stringify(patientData, null, 2)}</pre>;
   };
+
+
 
   const renderUpdateFields = () => {
     switch (selectedField) {
@@ -315,17 +324,18 @@ function HcpDash() {
 
   return (
     <div>
-      <h1>HealthCare Provider Dashboard</h1>
+      <h1>Welcome to MediChain HealthCare Provider Dashboard; {data.userID}</h1>
       <p>Your connected MetaMask account: {account}</p>
-      <p>Your wallet address is {data.walletAddress}</p>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      
       <div>
         <label htmlFor="patientAddress">Patient Wallet Address: </label>
         <input
           type="text"
           id="patientAddress"
           value={patientAddress}
-          onChange={(e) => setPatientAddress(e.target.value)}
+          onChange={
+            (e) => setPatientAddress(e.target.value)
+          }
           placeholder="Enter patient's wallet address"
         />
       </div>

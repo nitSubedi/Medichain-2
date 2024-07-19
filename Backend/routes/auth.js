@@ -122,7 +122,7 @@ router.post('/addProviderorPatient', authenticateToken, async(req,res)=>{
         console.error("Unable to add patient or provider",error);
         res.status(500).json({message: "Server Error"})
     }
-})
+});
 
 
 
