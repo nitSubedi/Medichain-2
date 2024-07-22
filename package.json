@@ -25,6 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.1",
     "solc": "^0.8.19",
+    "styled-components": "^6.1.12",
     "web3": "^4.10.0"
   }
 }

@@ -2,6 +2,71 @@ import React, { useContext, useState } from 'react'
 import { Form, redirect, useActionData, useNavigation, Link } from 'react-router-dom'
 import { RoleContext } from '../utils/ThemeRole'
 import { loginUser } from '../utils/api'
+import styled from 'styled-components';
+
+const Container = styled.div`
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+`;
+
+const Title = styled.h1`
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #007bff;
+`;
+
+const FormStyled = styled(Form)`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const RoleSelection = styled.div`
+  margin-bottom: 15px;
+  text-align: left;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input[type='radio'] {
+    margin-right: 10px;
+  }
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+
+  &:disabled {
+    background-color: #cccccc;
+  }
+
+  &:hover:enabled {
+    background-color: #0056b3;
+  }
+`;
+
 
 
 export async function loginAction({ request }) {

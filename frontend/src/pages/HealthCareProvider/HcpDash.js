@@ -4,7 +4,7 @@ import { getUserData } from '../../utils/api';
 import { addProviderorPatient } from '../../utils/api';
 import { contractABIs, contractAddresses } from '../../utils/contracts';
 import Web3 from 'web3';
-
+import '../../index.css';
 let web3;
 
 if (window.ethereum) {
@@ -31,7 +31,7 @@ function HcpDash() {
   const [mode, setMode] = useState(null);
   const [selectedField, setSelectedField] = useState('');
   const [patientData, setPatientData] = useState('');
-  const [newData, setNewData] = useState('');
+  const [newData, setNewData] = useState([]);
   const [account, setAccount] = useState('');
  
 
@@ -174,6 +174,7 @@ function HcpDash() {
 
   const handleFieldSelect = (e) => {
     setSelectedField(e.target.value);
+    setNewData([]);
   };
 
   const handleUpdatePatientData = async () => {
@@ -241,81 +242,217 @@ function HcpDash() {
     return <pre>{JSON.stringify(patientData, null, 2)}</pre>;
   };
 
+  const fieldStructures = {
+    allergies: ['Allergy'],
+    demographics: ['Name', 'Date of Birth', 'Gender', 'Home Address'],
+    immunizations: ['Vaccine', 'Administered Date'],
+    insurance: [
+      'Provider',
+      'Policy Number',
+      'Coverage Details',
+      'Coverage Limit',
+      'Effective Date Start',
+      'Effective Date End',
+      'Contact Info',
+    ],
+    medicalConditions: ['Condition', 'Diagnosis Date'],
+    medications: [
+      'Medication Name',
+      'Dosage',
+      'Start Date',
+      'End Date'
+    ],
+    mentalHealth: ['Mental Health Diagnosis', 'Date Diagnosed'],
+    surgeries: ['Surgery Type', 'Surgery Date'],
+  };
+
 
 
   const renderUpdateFields = () => {
     switch (selectedField) {
       case 'allergies':
         return (
-          <input
-            type="text"
-            placeholder="New Allergy"
-            value={newData}
-            onChange={(e) => setNewData(e.target.value.split(','))}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="New Allergy"
+              value={newData[0] || ''}
+              onChange={(e) => setNewData([e.target.value])}
+            />
+          </div>
         );
       case 'demographics':
         return (
-          <input
-            type="text"
-            placeholder="Name, DOB, Gender, Address"
-            value={newData}
-            onChange={(e) => setNewData(e.target.value.split(','))}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Name"
+              value={newData[0] || ''}
+              onChange={(e) => setNewData([e.target.value, newData[1], newData[2], newData[3]])}
+            />
+            <input
+              type="text"
+              placeholder="Date of Birth"
+              value={newData[1] || ''}
+              onChange={(e) => setNewData([newData[0], e.target.value, newData[2], newData[3]])}
+            />
+            <input
+              type="text"
+              placeholder="Gender"
+              value={newData[2] || ''}
+              onChange={(e) => setNewData([newData[0], newData[1], e.target.value, newData[3]])}
+            />
+            <input
+              type="text"
+              placeholder="Home Address"
+              value={newData[3] || ''}
+              onChange={(e) => setNewData([newData[0], newData[1], newData[2], e.target.value])}
+            />
+          </div>
         );
       case 'immunizations':
         return (
-          <input
-            type="text"
-            placeholder="Vaccine, Administered Date"
-            value={newData}
-            onChange={(e) => setNewData(e.target.value.split(','))}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Vaccine"
+              value={newData[0] || ''}
+              onChange={(e) => setNewData([e.target.value, newData[1]])}
+            />
+            <input
+              type="text"
+              placeholder="Administered Date"
+              value={newData[1] || ''}
+              onChange={(e) => setNewData([newData[0], e.target.value])}
+            />
+          </div>
         );
       case 'insurance':
         return (
-          <input
-            type="text"
-            placeholder="Provider, Policy Number, Coverage Details, Coverage Limit, Effective Date Start, Effective Date End, Contact Info"
-            value={newData}
-            onChange={(e) => setNewData(e.target.value.split(','))}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Provider"
+              value={newData[0] || ''}
+              onChange={(e) => setNewData([e.target.value, newData[1], newData[2], newData[3], newData[4], newData[5], newData[6]])}
+            />
+            <input
+              type="text"
+              placeholder="Policy Number"
+              value={newData[1] || ''}
+              onChange={(e) => setNewData([newData[0], e.target.value, newData[2], newData[3], newData[4], newData[5], newData[6]])}
+            />
+            <input
+              type="text"
+              placeholder="Coverage Details"
+              value={newData[2] || ''}
+              onChange={(e) => setNewData([newData[0], newData[1], e.target.value, newData[3], newData[4], newData[5], newData[6]])}
+            />
+            <input
+              type="text"
+              placeholder="Coverage Limit"
+              value={newData[3] || ''}
+              onChange={(e) => setNewData([newData[0], newData[1], newData[2], e.target.value, newData[4], newData[5], newData[6]])}
+            />
+            <input
+              type="text"
+              placeholder="Effective Date Start"
+              value={newData[4] || ''}
+              onChange={(e) => setNewData([newData[0], newData[1], newData[2], newData[3], e.target.value, newData[5], newData[6]])}
+            />
+            <input
+              type="text"
+              placeholder="Effective Date End"
+              value={newData[5] || ''}
+              onChange={(e) => setNewData([newData[0], newData[1], newData[2], newData[3], newData[4], e.target.value, newData[6]])}
+            />
+            <input
+              type="text"
+              placeholder="Contact Info"
+              value={newData[6] || ''}
+              onChange={(e) => setNewData([newData[0], newData[1], newData[2], newData[3], newData[4], newData[5], e.target.value])}
+            />
+          </div>
         );
       case 'medicalConditions':
         return (
-          <input
-            type="text"
-            placeholder="Condition, Diagnosis Date"
-            value={newData}
-            onChange={(e) => setNewData(e.target.value.split(','))}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Condition"
+              value={newData[0] || ''}
+              onChange={(e) => setNewData([e.target.value, newData[1]])}
+            />
+            <input
+              type="text"
+              placeholder="Diagnosis Date"
+              value={newData[1] || ''}
+              onChange={(e) => setNewData([newData[0], e.target.value])}
+            />
+          </div>
         );
       case 'medications':
         return (
-          <input
-            type="text"
-            placeholder="Medication Name, Dosage, Start Date, End Date"
-            value={newData}
-            onChange={(e) => setNewData(e.target.value.split(','))}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Medication Name"
+              value={newData[0] || ''}
+              onChange={(e) => setNewData([e.target.value, newData[1], newData[2], newData[3]])}
+            />
+            <input
+              type="text"
+              placeholder="Dosage"
+              value={newData[1] || ''}
+              onChange={(e) => setNewData([newData[0], e.target.value, newData[2], newData[3]])}
+            />
+            <input
+              type="text"
+              placeholder="Start Date"
+              value={newData[2] || ''}
+              onChange={(e) => setNewData([newData[0], newData[1], e.target.value, newData[3]])}
+            />
+            <input
+              type="text"
+              placeholder="End Date"
+              value={newData[3] || ''}
+              onChange={(e) => setNewData([newData[0], newData[1], newData[2], e.target.value])}
+            />
+          </div>
         );
       case 'mentalHealth':
         return (
-          <input
-            type="text"
-            placeholder="Mental Health Diagnosis, Date Diagnosed"
-            value={newData}
-            onChange={(e) => setNewData(e.target.value.split(','))}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Mental Health Diagnosis"
+              value={newData[0] || ''}
+              onChange={(e) => setNewData([e.target.value, newData[1]])}
+            />
+            <input
+              type="text"
+              placeholder="Date Diagnosed"
+              value={newData[1] || ''}
+              onChange={(e) => setNewData([newData[0], e.target.value])}
+            />
+          </div>
         );
       case 'surgeries':
         return (
-          <input
-            type="text"
-            placeholder="Surgery Type, Surgery Date"
-            value={newData}
-            onChange={(e) => setNewData(e.target.value.split(','))}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Surgery Type"
+              value={newData[0] || ''}
+              onChange={(e) => setNewData([e.target.value, newData[1]])}
+            />
+            <input
+              type="text"
+              placeholder="Surgery Date"
+              value={newData[1] || ''}
+              onChange={(e) => setNewData([newData[0], e.target.value])}
+            />
+          </div>
         );
       default:
         return null;
@@ -324,62 +461,48 @@ function HcpDash() {
 
   return (
     <div>
-      <h1>Welcome to MediChain HealthCare Provider Dashboard; {data.userID}</h1>
-      <p>Your connected MetaMask account: {account}</p>
-      
+      <h1>Welcome to MediChain, {data.userID}!</h1>
       <div>
-        <label htmlFor="patientAddress">Patient Wallet Address: </label>
-        <input
-          type="text"
-          id="patientAddress"
-          value={patientAddress}
-          onChange={
-            (e) => setPatientAddress(e.target.value)
-          }
-          placeholder="Enter patient's wallet address"
-        />
-      </div>
-      <div>
-        <button onClick={connectMetaMask}>Connect to MetaMask</button>
-        <button onClick={handleRead}>Read</button>
-        <button onClick={handleUpdate}>Update</button>
-      </div>
+        <p>Your connected MetaMask account: {account}</p>
 
-      {mode === 'read' && (
-        <div>
-          <h2>Reading Patient Data</h2>
-          {renderPatientDataJSON()}
         </div>
+        <div>
+          <label htmlFor='patientAddress'>Patient Wallet Address</label>
+          <input
+            type="text"
+            placeholder="Patient Address"
+            value={patientAddress}
+            onChange={(e) => setPatientAddress(e.target.value)}
+          />
+          </div>
+          <button onClick={connectMetaMask}>Connect to MetaMask</button>
+          <button onClick={handleRead}>Read Patient Data</button>
+          <button onClick={handleUpdate}>Update Patient Data</button>
+          <button onClick={handleClick}>Log Out</button>
+          {mode === 'read' && (
+            <div>
+              <h2>Patient Data</h2>
+              {renderPatientDataJSON()}  
+          </div>
       )}
-
       {mode === 'update' && (
         <div>
-          <h2>Select Field to Update</h2>
+          <h2>Update Patient Data</h2>
           <select value={selectedField} onChange={handleFieldSelect}>
-            <option value="">Select a field</option>
-            <option value="allergies">Allergies</option>
-            <option value="demographics">Demographics</option>
-            <option value="immunizations">Immunizations</option>
-            <option value="insurance">Insurance</option>
-            <option value="medicalConditions">Medical Conditions</option>
-            <option value="medications">Medications</option>
-            <option value="mentalHealth">Mental Health</option>
-            <option value="surgeries">Surgeries</option>
+            <option value="">Select Field</option>
+            {Object.keys(fieldStructures).map((key) => (
+              <option key={key} value={key}>
+                {key}
+              </option>
+            ))}
           </select>
-
-          {selectedField && (
-            <div>
-              <h3>Updating {selectedField}</h3>
-              {renderUpdateFields()}
-              <button onClick={handleUpdatePatientData}>Update</button>
-            </div>
-          )}
+          {renderUpdateFields()}
+          <button onClick={handleUpdatePatientData}>Submit</button>
         </div>
       )}
-
-      <button onClick={handleClick}>Log Out</button>
     </div>
   );
 }
+
 
 export default HcpDash;

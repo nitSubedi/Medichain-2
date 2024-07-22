@@ -291,7 +291,7 @@ function PatientDash() {
 
   return (
     <div>
-      <h1>Welcome to MediChain Patient Dashboard {data.userID}</h1>
+      <h1>Welcome to MediChain, {data.userID}!</h1>
       <div>
         <p>Your connected MetaMask account: {account}</p>
         
