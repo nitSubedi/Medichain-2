@@ -460,11 +460,11 @@ function HcpDash() {
   };
 
   return (
-    <div>
-      <h1>Welcome to MediChain, {data.userID}!</h1>
-      <div>
-        <p>Your connected MetaMask account: {account}</p>
-
+      <div className="hdashboard-container">
+        <h1>Welcome to MediChain, {data.userID}!</h1>
+        <div>
+          <p>Your connected MetaMask account: {account}</p>
+          <button onClick={connectMetaMask} className='connect'>Connect to MetaMask</button>
         </div>
         <div>
           <label htmlFor='patientAddress'>Patient Wallet Address</label>
@@ -474,34 +474,36 @@ function HcpDash() {
             value={patientAddress}
             onChange={(e) => setPatientAddress(e.target.value)}
           />
-          </div>
-          <button onClick={connectMetaMask}>Connect to MetaMask</button>
+        </div>
+        <div className='button-group'> 
           <button onClick={handleRead}>Read Patient Data</button>
           <button onClick={handleUpdate}>Update Patient Data</button>
-          <button onClick={handleClick}>Log Out</button>
-          {mode === 'read' && (
-            <div>
-              <h2>Patient Data</h2>
-              {renderPatientDataJSON()}  
-          </div>
-      )}
-      {mode === 'update' && (
-        <div>
-          <h2>Update Patient Data</h2>
-          <select value={selectedField} onChange={handleFieldSelect}>
-            <option value="">Select Field</option>
-            {Object.keys(fieldStructures).map((key) => (
-              <option key={key} value={key}>
-                {key}
-              </option>
-            ))}
-          </select>
-          {renderUpdateFields()}
-          <button onClick={handleUpdatePatientData}>Submit</button>
+          <button className='logout-button' onClick={handleClick}>Log Out</button>
         </div>
-      )}
-    </div>
-  );
+       
+        {mode === 'read' && (
+          <div className='patient-data'>
+            <h2>Patient Data</h2>
+            {renderPatientDataJSON()}
+          </div>
+        )}
+        {mode === 'update' && (
+          <div>
+            <h2>Update Patient Data</h2>
+            <select value={selectedField} onChange={handleFieldSelect}>
+              <option value="">Select Field</option>
+              {Object.keys(fieldStructures).map((key) => (
+                <option key={key} value={key}>
+                  {key}
+                </option>
+              ))}
+            </select>
+            {renderUpdateFields()}
+            <button onClick={handleUpdatePatientData}>Submit</button>
+          </div>
+        )}
+      </div>
+    );
 }
 
 

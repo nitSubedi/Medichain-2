@@ -36,6 +36,7 @@ scrollbar-width: none;
 /* Header */
 header {
   padding: 15px;
+  margin-bottom: 100px;
   text-align: center;
   font-size: 1.2em;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
@@ -45,6 +46,8 @@ main {
   flex: 1;
   padding: 15px;
   background-color: #fff;
+  /* margin: 0 auto; */
+
 }
 
 footer {
@@ -55,8 +58,484 @@ footer {
   font-size: 0.9em;
 }
 
-.patient-log{
+
+
+/* ---------------------------Login Page--------------------------------*/
+/* Container */
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  margin: 0 auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.login-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+.login-container h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #007bff;
+}
+
+/* Form */
+.login-form {
   display: flex;
-  /* align-items: center; */
+  flex-direction: column;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"],
+.login-form input[type="tel"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus,
+.login-form input[type="tel"]:focus {
+  border-color: #007bff;
+}
+
+/* Role Selection */
+.role-selection {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.role-selection span {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.radio-options {
+  display: flex;
   justify-content: space-around;
+}
+
+.radio-options label {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.radio-options input[type="radio"] {
+  margin-right: 5px;
+}
+
+
+/* Button */
+.login-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:disabled {
+  background-color: #cccccc;
+}
+
+.login-form button:hover:enabled {
+  background-color: #0056b3;
+}
+
+/* Error Message */
+h1[style] {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+/* Link */
+.login-container a {
+  display: block;
+  margin-top: 15px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-container a:hover {
+  text-decoration: underline;
+}
+
+
+/* ---------------------------Signup Page--------------------------------*/
+/* Container */
+.signup-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  margin: 0 auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.signup-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+.signup-container h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #007bff;
+}
+
+/* Form */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-form input[type="text"],
+.signup-form input[type="password"],
+.signup-form input[type="tel"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.signup-form input[type="text"]:focus,
+.signup-form input[type="password"]:focus,
+.signup-form input[type="tel"]:focus {
+  border-color: #007bff;
+}
+
+/* Role Selection */
+.role-selection {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.role-selection span {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.radio-options {
+  display: flex;
+  justify-content: space-around;
+}
+
+.radio-options label {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.radio-options input[type="radio"] {
+  margin-right: 5px;
+}
+
+/* Button */
+.signup-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.signup-form button:disabled {
+  background-color: #cccccc;
+}
+
+.signup-form button:hover:enabled {
+  background-color: #0056b3;
+}
+
+/* Error Message */
+h1[style] {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+/* Link */
+.signup-container a {
+  display: block;
+  margin-top: 15px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-container a:hover {
+  text-decoration: underline;
+}
+
+
+
+/* ---------------------------Patient Dashboard Page--------------------------------*/
+
+/* Container */
+.dashboard-container {
+  width: 100%;
+  max-width: 600px;
+  padding: 40px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+
+}
+
+.dashboard-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+.dashboard-container h1 {
+  margin-top: 0;
+  margin-bottom: 50px;
+  font-size: 24px;
+  color: #007bff;
+}
+
+/* Account Info */
+.account-info {
+  margin-bottom: 50px;
+}
+
+/* Input Container */
+.input-container {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.input-container input:focus {
+  border-color: #007bff;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.button-group button {
+  padding: 10px 20px;
+  background-color: steelblue;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+  background-color: #0056b3;
+}
+
+/* Access Info */
+.access-info {
+  margin-bottom: 20px;
+}
+
+/* Patient Data */
+.patient-data {
+  margin-top: 20px;
+  text-align: left;
+}
+
+/* Logout Button */
+.logout-button {
+  padding: 10px 20px;
+  background-color: #ff4d4d;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #cc0000;
+}
+
+
+/* ---------------------------Health Care Dashboard Page--------------------------------*/
+
+/* Container */
+.hdashboard-container {
+  width: 100%;
+  max-width: 800px;
+  padding: 40px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.hdashboard-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+.hdashboard-container h1 {
+  margin-top:0;
+  margin-bottom: 60px;
+  font-size: 24px;
+  color: #007bff;
+}
+
+/* MetaMask Account Info */
+.hdashboard-container p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.connect{
+  margin-bottom: 20px;
+  border: 1px solid magenta;
+}
+
+/* Labels */
+.hdashboard-container label {
+  display: block;
+  margin-bottom:10px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: left;
+}
+
+/* Input Fields */
+.hdashboard-container input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 50px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.hdashboard-container input[type="text"]:focus {
+  border-color: #007bff;
+}
+
+/* Buttons */
+.hdashboard-container button {
+  padding: 12px 20px;
+  background-color: steelblue;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.hdashboard-container button:hover {
+  background-color: #0056b3;
+}
+
+
+/* Logout Button */
+.hdashboard-container .logout-button {
+  padding: 12px 20px;
+  background-color: #ff4d4d;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.hdashboard-container .logout-button:hover {
+  background-color: #cc0000;
+}
+
+/* Patient Data Section */
+.hdashboard-container h2 {
+  text-align: left;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #007bff;
+}
+
+/* Select Dropdown */
+.hdashboard-container select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.hdashboard-container select:focus {
+  border-color: #007bff;
+}
+
+/* Update Fields Container */
+.update-fields-container {
+  margin-bottom: 20px;
 }

@@ -68,29 +68,31 @@ function Signup() {
           onChange={handleChange}
         />
 
-        <div>
-          Select Your Role:
-          <label>
-            Patient
-            <input
-              name='role'
-              type='radio'
-              value="patient"
-              checked={signupFormData.role === 'patient'}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            HealthCare Provider
-            <input
-              name='role'
-              type='radio'
-              value="healthcare_provider"
-              checked={signupFormData.role === 'healthcare_provider'}
-              onChange={handleChange}
-            />
-          </label>
-        </div>
+<div className="role-selection">
+      <span>Select Your Role:</span>
+      <div className="radio-options">
+        <label>
+          <input
+            name='role'
+            type='radio'
+            value="patient"
+            checked={signupFormData.role === 'patient'}
+            onChange={handleChange}
+          />
+          Patient
+        </label>
+        <label>
+          <input
+            name='role'
+            type='radio'
+            value="healthcare_provider"
+            checked={signupFormData.role === 'healthcare_provider'}
+            onChange={handleChange}
+          />
+          HealthCare Provider
+        </label>
+      </div>
+    </div>
         <input
           name='phoneNumber'
           type='tel'

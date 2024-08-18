@@ -1,14 +1,14 @@
 const contractAddresses = {
-    accessControl: "0x5a48536128763aE54716a31CE7f28D2E04b802Ec",
-    allergies: "0xf2d3DcaE557Ff2093233C6cFDd7e8F64447A619E",
-    demographics: "0xd3d2BF906CFDD1EA79bBb9429510462Fb1fCc8db",
-    immunization: "0x2e5ab639f7aF458273cB552008F8f865650729ba",
-    insurance: "0x20F2ffF68b1e1c458104503A717eDC3f94846f3F",
-    medicalConditions: "0x96eE1ae95DEaf9Dae71471eA5eB2bC1b0076ddEe",
-    medications: "0x3bd7264e811097e0cB4cd5Ec879991cecdcB9D0d",
-    medichain: "0x363062933c7AC10D662aaA2846fbF1c0EeaF761f",
-    mentalHealth: "0x44792f29E14F2FB44AC5e1d2107eF347ad370fdD",
-    surgeries: "0x14b613dDDcD0c265195Ce40C3816393d5CA2B539"
+    accessControl: "0xF5E0309da905B0828f2ad696bCe6F058c73fc0eE",
+    allergies: "0x5BB2D184b0CD3d681c500712800B8b5222d678D1",
+    demographics: "0x02cE2e59c2ec4D3F46EFe2FC56da7B5b442FAF15",
+    immunization: "0x6D0a727976606F8cC383055B3D4b6F2678BCebbb",
+    insurance: "0x8c90365342aAF8239D6Eb8DF9F53f1c3e6f66c19",
+    medicalConditions: "0x64e922CFEb567c352ADDA5736B007c77C01217d6",
+    medications: "0x1D9C09C451D2cce8E42283DFfcFC4157B3234Fc7",
+    medichain: "0x1331f480cCFfc06e9A82b7d4a48F304DF8e0116c",
+    mentalHealth: "0x26Cefd84194529cE533eFbB757B254481E248209",
+    surgeries: "0xaD3fbAc3505dF32179a4c5265529e487eEb49e58"
 };
 
 // If you need to include any additional functions or changes from other branches, add them below

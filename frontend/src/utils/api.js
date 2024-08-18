@@ -50,14 +50,16 @@ export async function getUserData() {
 
 }
 
-export async function addProviderorPatient(address){
+export async function addProviderorPatient(userID,address){
+    const token = localStorage.getItem("authToken")
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
     const res = await fetch(`${apiBaseUrl}/api/auth/addProviderorPatient`,
     {
         method: "POST",
-        body: JSON.stringify(address),
+        body: JSON.stringify({userID,address}),
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${token}`
         }
     }
     );

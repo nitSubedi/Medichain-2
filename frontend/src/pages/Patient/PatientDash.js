@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLoaderData, json, redirect } from 'react-router-dom';
 import { getUserData } from '../../utils/api'; 
 import { contractABIs, contractAddresses} from "../../utils/contracts";
+import { addProviderorPatient } from '../../utils/api';
 import {Web3} from "web3";
 
 let web3
@@ -96,7 +97,9 @@ function PatientDash() {
       
       alert(tx)
       
-      console.log("Access granted", tx ) 
+      console.log("Access granted", tx )
+      
+      console.log("address added", providerAddress, "for user", data.userID)
     } catch (error) {
       console.error('Error granting read access:', error);
       alert('Failed to grant read access');
@@ -290,38 +293,37 @@ function PatientDash() {
 
 
   return (
-    <div>
-      <h1>Welcome to MediChain, {data.userID}!</h1>
-      <div>
-        <p>Your connected MetaMask account: {account}</p>
-        
-      </div>
-      <div>
-        <label htmlFor='providerAddress'>Provider Wallet Address: </label>
-        <input
-          type='text'
-          id='providerAddress'
-          value={providerAddress}
-          onChange={(e) => setProviderAddress(e.target.value)}
-          placeholder="Enter provider's wallet address"
-        />
-      </div>
-      
-      <button onClick={connectMetaMask}>Connect to MetaMask</button>
+    <div className='dashboard-container'>
+    <h1>Welcome to MediChain, {data.userID}!</h1>
+    <div className='account-info'>
+      <p>Your connected MetaMask account: {account}</p>
+      <button  onClick={connectMetaMask}>Connect to MetaMask</button>
+    </div>
+    <div className='input-container'>
+      <label htmlFor='providerAddress'>Provider Wallet Address: </label>
+      <input
+        type='text'
+        id='providerAddress'
+        value={providerAddress}
+        onChange={(e) => setProviderAddress(e.target.value)}
+        placeholder="Enter provider's wallet address"
+      />
+    </div>
+    <div className='button-group'>
       <button onClick={handleGrantReadAccess}>Grant Read Access</button>
       <button onClick={handleaRevokeReadAccess}>Revoke Read Access</button>
       <button onClick={handleGrantUpdateAccess}>Grant Update Access</button>
       <button onClick={handleaRevokeUpdateAccess}>Revoke Update Access</button>
       <button onClick={handleRead}>See your medical history</button>
-      <button onClick={handleClick}>Log Out</button>
-
-      {mode === 'read' && (
-        <div>
-          <h2>Reading Patient Data</h2>
-          {renderPatientDataJSON()}
-        </div>
-      )}
     </div>
+    <button className='logout-button' onClick={handleClick}>Log Out</button>
+    {mode === 'read' && (
+      <div className='patient-data'>
+        <h2>Reading Patient Data</h2>
+        {renderPatientDataJSON()}
+      </div>
+    )}
+  </div>
      
       
   );

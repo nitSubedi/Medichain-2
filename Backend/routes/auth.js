@@ -102,7 +102,7 @@ router.get('/user', authenticateToken, async (req, res) => {
     }
 });
 
-router.post('/addProviderorPatient', authenticateToken, async(req,res)=>{
+router.post('/addProviderorPatient',authenticateToken, async(req,res)=>{
     const {userID,address} = req.body;
         if (!userID || !address) {
             return res.status(400).json({ message: 'userID and address are required' });
